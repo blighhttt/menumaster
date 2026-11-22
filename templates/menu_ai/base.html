@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Меню Генератор{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{oat:'#FAF7F2',sage:'#DCE7DC',leaf:'#7C9A82',rose:'#F4E4E4',blush:'#D89A9E',latte:'#EFE6DD',ink:'#2D312E'},fontFamily:{serif:['Cormorant Garamond','serif'],sans:['Plus Jakarta Sans','sans-serif']}}}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'menu_ai/site.css' %}">{% block head %}{% endblock %}
+</head>
+<body class="bg-oat text-ink font-sans min-h-screen">
+  <header class="sticky top-0 z-30 border-b border-white/60 bg-oat/80 backdrop-blur-xl">
+    <nav class="max-w-7xl mx-auto px-5 lg:px-8 h-[76px] flex items-center justify-between">
+      <a href="/" class="font-serif text-2xl font-semibold tracking-tight">Меню <span class="text-leaf">Генератор</span></a>
+      <div class="hidden md:flex gap-8 text-sm text-ink/70"><a href="/#generator" class="hover:text-leaf">Генератор</a><a href="/#templates" class="hover:text-leaf">Шаблоны</a>{% if user.is_authenticated %}<a href="{% url 'my_menu' %}" class="hover:text-leaf">Моё меню</a>{% endif %}</div>
+      <button id="kami-leaf" class="kami-leaf" aria-label="Пожелание от Ками" title="Маленькая порция вдохновения">🍃</button>
+      <div class="flex items-center gap-3 text-sm">{% if user.is_authenticated %}<span class="hidden sm:block">Привет, {{ user.username }}!</span><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="rounded-full border border-ink/15 px-4 py-2 hover:bg-white">Выйти</button></form>{% else %}<a href="{% url 'login' %}" class="hover:text-leaf">Войти</a><a href="{% url 'register' %}" class="rounded-full bg-ink text-white px-5 py-2.5 hover:bg-leaf">Начать</a>{% endif %}</div>
+    </nav>
+  </header>
+  {% if messages %}<div class="max-w-7xl mx-auto px-5 pt-4">{% for message in messages %}<div class="p-3 rounded-2xl bg-sage">{{ message }}</div>{% endfor %}</div>{% endif %}
+  <div id="kami-toast" class="kami-toast" role="status" aria-live="polite"></div>
+  {% block content %}{% endblock %}
+  <footer class="border-t border-ink/10 mt-24"><div class="max-w-7xl mx-auto px-5 py-8 flex justify-between text-sm text-ink/55"><span>С теплом к городу и его вкусам · Алматы</span><span>© 2026 Меню Генератор <i class="footer-kami">by Ками</i></span></div></footer>
+  <script>(()=>{const leaf=document.querySelector('#kami-leaf'),toast=document.querySelector('#kami-toast');if(!leaf||!toast)return;leaf.addEventListener('click',()=>{toast.textContent='Сделано с любовью Ками ✨ Вдохновения для твоего лучшего меню!';toast.classList.add('show');leaf.classList.add('leaf-pop');setTimeout(()=>{toast.classList.remove('show');leaf.classList.remove('leaf-pop')},3200)})})();</script>
+  {% block scripts %}{% endblock %}
+</body></html>

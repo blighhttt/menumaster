@@ -1,0 +1,46 @@
+{% extends 'menu_ai/base.html' %}
+{% load static %}
+{% block title %}Меню Генератор{% endblock %}
+{% block head %}<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>{% endblock %}
+{% block content %}
+<main>
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 pt-16 pb-20 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 rounded-full bg-sage/70 px-4 py-2 text-xs uppercase tracking-[.16em] text-leaf"><span>✳</span> вкус города, созданный с умом</div>
+      <h1 class="font-serif text-[3.4rem] md:text-[5.6rem] leading-[.92] tracking-tight mt-8">От свежей идеи<br>до меню <em class="text-leaf">за пару минут</em></h1>
+      <p class="text-lg text-ink/65 max-w-lg mt-7 leading-relaxed">Создавайте авторские блюда, продуманные для вашей концепции, и сразу собирайте красивое меню — с настроением Алматы.</p>
+      <a href="#generator" class="inline-flex items-center gap-3 bg-ink text-white px-7 py-4 rounded-full mt-8 hover:bg-leaf transition">Начать создавать <span>↘</span></a>
+      <div class="mt-12 flex items-center gap-4 text-sm text-ink/50"><span class="text-2xl text-blush">✳</span><span>Локальные рецепты · цены в тенге<br>готово за пару секунд</span></div>
+    </div>
+    <div class="hero-art relative min-h-[440px] rounded-[2.5rem] overflow-hidden flex items-center justify-center"><div class="absolute inset-0 bg-gradient-to-br from-sage via-[#eff0e6] to-rose"></div><div class="absolute -top-12 -right-7 w-64 h-64 rounded-full border border-white/80"></div><div class="absolute bottom-8 left-8 font-serif text-8xl text-white/60">✳</div><div class="relative w-64 h-80 rotate-[5deg] rounded-[2rem] bg-white/75 backdrop-blur-md shadow-xl p-6 flex flex-col justify-between"><div class="text-[10px] tracking-[.24em] uppercase text-leaf">Меню Генератор</div><div><div class="w-36 h-36 mx-auto rounded-full bg-gradient-to-br from-[#e4edda] via-[#f2e9d7] to-[#d8c1a8] shadow-inner flex items-center justify-center"><span class="text-6xl">🍵</span></div><p class="font-serif text-3xl text-center mt-5">Вкус Алматы</p><p class="text-xs text-center text-ink/50 mt-1">a little pause in the city</p></div><div class="flex justify-between text-xs text-ink/50"><span>с любовью</span><span>43° N</span></div></div><div class="absolute right-7 bottom-8 rounded-2xl bg-white/80 backdrop-blur px-4 py-3 shadow-soft text-xs">✦ Алматы, с любовью</div></div>
+  </section>
+
+  <section id="generator" class="bg-[#f1eee8] py-20"><div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="max-w-2xl mb-10"><p class="eyebrow">01 / настройте настроение</p><h2 class="font-serif text-5xl md:text-6xl mt-3">Ваш следующий хит</h2><p class="text-ink/60 mt-3">Выберите концепцию и вкус — генератор подскажет, чем удивить гостей.</p></div>
+    <div class="grid lg:grid-cols-[.78fr_1.22fr] gap-6 items-start">
+      <form id="generator-form" class="bg-white rounded-[2rem] p-6 md:p-8 shadow-soft space-y-5">{% csrf_token %}
+        <label class="field-label">Формат заведения<select name="venue">
+          <option>Современное кафе &amp; Матча-бар</option><option>Восточное кафе / Нео-Восток</option><option>Крафтовый фастфуд &amp; Бургерная</option><option>Авторская пекарня-кондитерская</option><option>Городское фьюжн-бистро (суши / боулы / пицца)</option>
+        </select></label>
+        <label class="field-label">Сезон в Алматы<select name="season"><option>Весна — цветущие яблони и свежая зелень</option><option>Лето — прохлада предгорий и ягоды</option><option>Золотая осень — пряности, тыква, инжир</option><option>Зима — уют после Медеу и Шымбулака</option></select></label>
+        <label class="field-label">Настроение<select name="vibe"><option>Утренний дзен и эстетика</option><option>Энергия большого города</option><option>Романтичный вечер</option><option>Лёгкий ЗОЖ и баланс</option></select></label>
+        <label class="field-label">Категория блюда<select name="category"><option>Матча и авторские напитки</option><option>Основные блюда</option><option>Боулы</option><option>Десерты</option><option>Свежая выпечка</option><option>Неаполитанская/авторская пицца</option><option>Крафтовые бургеры</option><option>Суши и роллы</option><option>Мезе и восточные закуски</option><option>Плов и восточные блюда</option><option>Авторские чаи</option><option>Восточные десерты</option><option>Снеки и комбо-наборы</option></select></label>
+        <label class="field-label">Своя идея <span class="text-ink/40 font-normal tracking-normal">· по желанию</span><textarea name="prompt" rows="3" maxlength="600" placeholder="Опишите идею своими словами: например, «осенний десерт с алматинским апортом и корицей» или «острый бургер с вишнёвым соусом»"></textarea></label>
+        <button type="button" id="kami-inspiration" class="kami-inspire w-full rounded-2xl px-4 py-3 text-left">🐱 <span class="ml-2">Секретный выбор Ками</span><small class="block ml-8 text-xs opacity-60">нажмите за вдохновением дня</small></button>
+        <button id="generate-btn" class="w-full bg-ink text-white rounded-full py-4 hover:bg-leaf transition">Сгенерировать идеи <span class="ml-2">✦</span></button><p class="text-xs text-center text-ink/45">Встроенный генератор работает без API-ключа</p>
+      </form>
+      <div id="results" class="space-y-4"><div class="rounded-[2rem] border border-dashed border-ink/20 p-10 md:p-14 text-center min-h-[350px] flex flex-col justify-center items-center"><span class="text-4xl">✧</span><p class="font-serif text-3xl mt-4">Здесь родится идея</p><p class="text-sm text-ink/50 mt-2">Выберите настроение и нажмите «Сгенерировать»</p></div></div>
+    </div>
+  </div></section>
+
+  <section id="templates" class="max-w-7xl mx-auto px-5 lg:px-8 py-20"><div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10"><div><p class="eyebrow">02 / готово к подаче</p><h2 class="font-serif text-5xl md:text-6xl mt-3">Визуальные шаблоны</h2><p class="text-ink/60 mt-3">Ваши позиции в аккуратном меню — для печати или публикации.</p></div>
+    <div class="flex flex-wrap gap-2 poster-tabs">
+      <button class="template-tab" data-template="blue-chalk">Небесно-голубой скетч</button><button class="template-tab" data-template="matcha">Овсяный минимал &amp; Матча</button><button class="template-tab" data-template="esentai">Пудровая роза Editorial</button><button class="template-tab active" data-template="red-diner">Красный ретро-дайнер</button><button class="template-tab" data-template="pink-wave">Розовая волна &amp; Line Art</button><button class="template-tab" data-template="green-orange">Зелёный &amp; Оранжевый поп-арт</button><button class="template-tab" data-template="vintage-calligraphy">Графит &amp; Каллиграфия</button><button class="template-tab" data-template="cobalt-cafe">Кобальтовый синий &amp; Белый</button><button class="template-tab" data-template="sunny-bowls">Солнечный кремовый &amp; Акварель</button><button class="template-tab" data-template="kawaii-check">Клубничная клетка (Kawaii)</button><button class="template-tab" data-template="pastel-stripes">Пастельные полоски (Pink Stripes)</button><button class="template-tab" data-template="espresso-frame">Кофейный Эспрессо</button><button class="template-tab" data-template="donut-pop">Красно-жёлтый ретро-поп</button><button class="template-tab" data-template="kids-sky">Пастельное небо &amp; Звёздочки</button><button class="template-tab" data-template="red-grid-burger">Красная клетка (Grid)</button><button class="template-tab" data-template="mint-leaf">Мятный лист (Mint Grid)</button><button class="template-tab" data-template="summer-fresh">Летний свежий (Fresh Pastel)</button>
+    </div></div>
+    <div class="grid lg:grid-cols-[1fr_300px] gap-7 items-start"><div id="menu-preview" class="menu-poster red-diner"><div class="poster-head"><label class="poster-brand">ваше кафе<input id="cafe-name" class="poster-name" value="Моё кафе" aria-label="Название кафе"></label><span>ALMATY · MADE WITH CARE</span></div><div id="poster-content"></div><div class="poster-bottom"><span>Алматы · приготовлено с любовью</span><span class="kami-watermark">designed by Kami</span><button id="poster-stamp" class="poster-stamp" aria-label="Секретная подсказка">✦</button></div></div>
+      <aside class="rounded-3xl bg-[#f1eee8] p-6"><p class="eyebrow">ваш дизайн</p><h3 class="font-serif text-3xl mt-2">Меню на один клик</h3><p class="text-sm text-ink/60 mt-3 leading-relaxed">Название кафе можно изменить прямо на макете. Скачайте PNG или откройте версию для печати и PDF.</p><button id="download-menu" class="w-full mt-6 rounded-full bg-ink text-white py-3 hover:bg-leaf">Скачать меню · PNG</button><button id="print-menu" class="w-full mt-3 rounded-full border border-ink/20 py-3 hover:bg-white">Распечатать / PDF</button><div class="mt-6 pt-5 border-t border-ink/10 text-xs text-ink/50">Совет: в окне печати выберите «Сохранить как PDF».</div></aside>
+    </div>
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}<script>window.USER_AUTH={% if user.is_authenticated %}true{% else %}false{% endif %};</script><script src="{% static 'menu_ai/app.js' %}"></script>{% endblock %}

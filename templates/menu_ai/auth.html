@@ -1,0 +1,27 @@
+{% extends 'menu_ai/base.html' %}
+{% block title %}{{ title }} · Меню Генератор{% endblock %}
+{% block content %}
+<main class="max-w-lg mx-auto px-5 py-20">
+  <div class="rounded-[2rem] bg-white p-8 md:p-11 shadow-soft">
+    <p class="uppercase tracking-[.2em] text-xs text-leaf mb-4">добро пожаловать</p>
+    <h1 class="font-serif text-5xl mb-3">{{ title }}</h1>
+    <p class="text-ink/60 mb-8">Сохраняйте любимые идеи и создавайте меню с настроением Алматы.</p>
+    <form method="post" action="" class="space-y-5" novalidate>{% csrf_token %}
+      {% if form.non_field_errors %}<div class="auth-error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}
+      <label class="block text-sm font-medium">{{ field.label }}
+        <div class="mt-2">{{ field }}</div>
+        {% if field.errors %}<span class="text-rose-700 text-xs">{{ field.errors|striptags }}</span>{% endif %}
+        {% if field.help_text %}<span class="block text-xs text-ink/45 mt-1">{{ field.help_text|safe }}</span>{% endif %}
+      </label>
+      {% endfor %}
+      <button class="w-full rounded-full bg-ink text-white py-3.5 hover:bg-leaf">{{ submit }}</button>
+    </form>
+    <p class="mt-6 text-sm text-ink/60">
+      {% if is_login %}Нет аккаунта? <a class="text-leaf" href="{% url 'register' %}">Создать</a>
+      {% else %}Уже есть аккаунт? <a class="text-leaf" href="{% url 'login' %}">Войти</a>{% endif %}
+    </p>
+  </div>
+</main>
+<style>input{width:100%;padding:13px 15px;border:1px solid #dedbd4;border-radius:14px;background:#faf7f2}ul.errorlist{color:#a34550;font-size:13px}.auth-error{padding:12px 15px;border-radius:14px;background:#fbe9e7;color:#963d45;font-size:13px}</style>
+{% endblock %}
